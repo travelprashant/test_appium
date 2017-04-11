@@ -1,12 +1,40 @@
 package test_appium.test_appium;
 
 import java.net.MalformedURLException;
+import java.util.List;
 
 import org.openqa.selenium.By;
-
+import org.openqa.selenium.Dimension;
+import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 
 public class App {
+	
+	
+	
+ public static void swipe(String swipeType,AndroidDriver driver){
+		int screenWidth = 0;
+		int screenHight = 0;
+		Dimension screenSize = driver.manage().window().getSize();
+		screenWidth = Integer.valueOf(String.valueOf(screenSize
+				.getWidth())) / 2;
+		screenHight = Integer.valueOf(String.valueOf(screenSize
+				.getHeight())) / 2;
+		
+		if(swipeType.trim().toLowerCase().contains("up")){
+			driver.swipe(screenWidth, (2*screenHight)-240, screenWidth, screenHight, 2000);	
+		}else if(swipeType.trim().toLowerCase().contains("down")){
+			driver.swipe(screenWidth, screenHight, screenWidth, (2*screenHight)-100, 2000);	
+		}
+		else if(swipeType.trim().toLowerCase().contains("left")){
+			
+			driver.swipe((2*screenWidth)-100, screenHight, 20, screenHight, 2000);
+		}
+	 
+	}
+	
+
+	
 	public static void Form1(AndroidDriver driver) throws MalformedURLException, InterruptedException {
 
 		System.out.println("Form 1");
@@ -198,9 +226,9 @@ public static void Package(AndroidDriver driver) throws MalformedURLException, I
 		Thread.sleep(3000);
 		driver.findElement(By.xpath("//android.support.v4.view.ViewPager[@resource-id='com.traveltriangle.traveller:id/pager']")).click();
 		Thread.sleep(3000);
-		driver.findElement(By.id("com.traveltriangle.traveller:id/btn_sticky_text")).click();
-		Thread.sleep(6000);
-		
+		/*driver.findElement(By.xpath("//android.widget.TextView[@text='Read More']")).click();
+		Thread.sleep(3000);*/
+		System.out.println(driver.findElement(By.xpath("//android.widget.Button[@text='Read Less']")).getText());
 		
 	}
 
@@ -214,6 +242,9 @@ public static void Wishlist(AndroidDriver driver) throws MalformedURLException, 
 	Thread.sleep(3000);
 	System.out.println(driver.findElement(By.xpath("//android.support.v7.widget.RecyclerView[@resource-id='com.traveltriangle.traveller:id/rv_destination']//android.widget.FrameLayout[1]//android.widget.TextView[@resource-id='com.traveltriangle.traveller:id/tv_destination_name']")).getText());
 	Thread.sleep(3000);
+	MobileElement el = (MobileElement) driver.findElementByAndroidUIAutomator("text('Log in')");
+	System.out.println(el.isDisplayed());
+	
 	driver.findElement(By.xpath("//android.support.v7.widget.RecyclerView[@resource-id='com.traveltriangle.traveller:id/rv_destination']//android.widget.FrameLayout[1]//android.widget.CheckBox[@resource-id='com.traveltriangle.traveller:id/wishedItem']")).click();
 	Thread.sleep(3000);
 	driver.findElement(By.id("com.traveltriangle.traveller:id/iconImage")).click();
@@ -242,7 +273,103 @@ public static void Cancelreq(AndroidDriver driver) throws MalformedURLException,
 	driver.findElement(By.xpath("//android.widget.TextView[@text='Re-activate request']")).click();
 	Thread.sleep(3000);
 	
+}
+
+public static void CompareQuote(AndroidDriver driver) throws MalformedURLException, InterruptedException{
+	System.out.println("CompareQuote");
+	driver.findElement(By
+			.xpath("//android.widget.ListView[@resource-id='com.traveltriangle.traveller:id/listView']//android.widget.FrameLayout[1]"))
+			.click();
+	Thread.sleep(3000);
+	System.out.println(driver.findElement(By.xpath("//android.widget.HorizontalScrollView[@resource-id='com.traveltriangle.traveller:id/sliding_tabs']//android.widget.LinearLayout[1]//android.widget.RelativeLayout[1]//android.widget.TextView[@resource-id='com.traveltriangle.traveller:id/agent_name']")).getText());
+	System.out.println(driver.findElement(By.xpath("//android.widget.HorizontalScrollView[@resource-id='com.traveltriangle.traveller:id/sliding_tabs']//android.widget.LinearLayout[1]//android.widget.RelativeLayout[1]//android.widget.TextView[@resource-id='com.traveltriangle.traveller:id/price']")).getText());
+	System.out.println(driver.findElement(By.xpath("//android.widget.HorizontalScrollView[@resource-id='com.traveltriangle.traveller:id/sliding_tabs']//android.widget.LinearLayout[1]//android.widget.RelativeLayout[2]//android.widget.TextView[@resource-id='com.traveltriangle.traveller:id/agent_name']")).getText());
+	System.out.println(driver.findElement(By.xpath("//android.widget.HorizontalScrollView[@resource-id='com.traveltriangle.traveller:id/sliding_tabs']//android.widget.LinearLayout[1]//android.widget.RelativeLayout[2]//android.widget.TextView[@resource-id='com.traveltriangle.traveller:id/price']")).getText());
 	
+}
+
+public static void ComparePackage(AndroidDriver driver) throws MalformedURLException, InterruptedException{
+	System.out.println("ComparePackage");
+	driver.findElement(By
+			.xpath("//android.widget.HorizontalScrollView[@resource-id='com.traveltriangle.traveller:id/sliding_tabs']/android.widget.LinearLayout[@index='0']/android.widget.RelativeLayout[@index='0']"))
+			.click();
+	Thread.sleep(3000);
+	driver.findElement(By.xpath("//android.widget.TextView[@text='Romantic']")).click();
+	Thread.sleep(3000);
+	driver.findElement(By.xpath("//android.widget.TextView[@text='Kerala']")).click();
+	Thread.sleep(3000);
+	swipe("up", driver);
+	driver.findElement(By.id("com.traveltriangle.traveller:id/action_share")).click();
+	/*driver.findElement(By.xpath("//android.widget.TextView[contains(@text,'View all')]")).click();
+	Thread.sleep(3000);
+	
+	driver.findElement(By.xpath("//android.support.v7.widget.RecyclerView[@resource-id='com.traveltriangle.traveller:id/recyclerView']//android.widget.RelativeLayout[2]//android.widget.CheckBox[@resource-id='com.traveltriangle.traveller:id/wished_item']")).click();
+	Thread.sleep(3000);
+	swipe("up", driver);
+	driver.findElement(By.xpath("//android.support.v7.widget.RecyclerView[@resource-id='com.traveltriangle.traveller:id/recyclerView']//android.widget.RelativeLayout[2]//android.widget.CheckBox[@resource-id='com.traveltriangle.traveller:id/wished_item']")).click();
+	Thread.sleep(3000);
+	swipe("up", driver);
+	swipe("up", driver);
+	driver.findElement(By.xpath("//android.support.v7.widget.RecyclerView[@resource-id='com.traveltriangle.traveller:id/recyclerView']//android.widget.RelativeLayout[2]//android.widget.CheckBox[@resource-id='com.traveltriangle.traveller:id/wished_item']")).click();
+	Thread.sleep(3000);
+	swipe("up", driver);
+	swipe("up", driver);
+	driver.findElement(By.xpath("//android.support.v7.widget.RecyclerView[@resource-id='com.traveltriangle.traveller:id/recyclerView']//android.widget.RelativeLayout[2]//android.widget.CheckBox[@resource-id='com.traveltriangle.traveller:id/wished_item']")).click();
+	Thread.sleep(3000);
+	driver.findElement(By.id("com.traveltriangle.traveller:id/iconImage")).click();
+	Thread.sleep(3000);
+	driver.findElement(By.id("com.traveltriangle.traveller:id/addToCompare")).click();
+	Thread.sleep(3000);
+	swipe("up", driver);
+	swipe("up", driver);
+	driver.findElement(By.id("com.traveltriangle.traveller:id/addToCompare")).click();
+	Thread.sleep(3000);
+	swipe("up", driver);
+	swipe("up", driver);
+	driver.findElement(By.id("com.traveltriangle.traveller:id/addToCompare")).click();
+	Thread.sleep(2000);
+	driver.findElement(By.id("com.traveltriangle.traveller:id/compare")).click();
+	Thread.sleep(5000);
+	driver.findElement(By.xpath("//android.widget.TextView[@text='SUMMARY']")).click();
+	Thread.sleep(3000);
+	driver.findElement(By.xpath("//android.widget.TextView[@text='HOTELS']")).click();
+	Thread.sleep(3000);
+	driver.findElement(By.xpath("//android.widget.TextView[@text=\"WHAT'S INCLUDED\"]")).click();
+	Thread.sleep(3000);*/
+	
+}
+
+public static void Sort(AndroidDriver driver) throws MalformedURLException, InterruptedException{
+	System.out.println("Sort");
+	driver.findElement(By
+			.xpath("//android.widget.HorizontalScrollView[@resource-id='com.traveltriangle.traveller:id/sliding_tabs']/android.widget.LinearLayout[@index='0']/android.widget.RelativeLayout[@index='0']"))
+			.click();
+	Thread.sleep(3000);
+	driver.findElement(By.xpath("//android.widget.TextView[@text='DESTINATIONS']")).click();
+	Thread.sleep(8000);
+	driver.findElement(By.id("com.traveltriangle.traveller:id/layout_sort")).click();
+	Thread.sleep(3000);
+	driver.findElement(By.xpath("//android.widget.TextView[@text='Price - L To H']")).click();
+	Thread.sleep(3000);
+	List ll=driver.findElements(By.id("com.traveltriangle.traveller:id/tv_destination_name"));
+	System.out.println(ll.size());
+	System.out.println(driver.findElement(By.xpath("//android.widget.TextView[@resource-id='com.traveltriangle.traveller:id/tv_destination_name']")).getText());
+	swipe("up", driver);
+	swipe("up", driver);
+	Thread.sleep(5000);
+	System.out.println(driver.findElement(By.xpath("//android.widget.TextView[@resource-id='com.traveltriangle.traveller:id/tv_destination_name'][1]")).getText());
+	swipe("up", driver);
+	swipe("up", driver);
+	Thread.sleep(5000);
+	System.out.println(driver.findElement(By.id("com.traveltriangle.traveller:id/tv_destination_name")).getText());
+	swipe("up", driver);
+	swipe("up", driver);
+	Thread.sleep(5000);
+	System.out.println(driver.findElement(By.id("com.traveltriangle.traveller:id/tv_destination_name")).getText());
+	swipe("up", driver);
+	swipe("up", driver);
+	Thread.sleep(5000);
+	System.out.println(driver.findElement(By.id("com.traveltriangle.traveller:id/tv_destination_name")).getText());
 	
 }
 
