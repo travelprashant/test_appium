@@ -16,6 +16,7 @@ public class StartApplication {
 
 	private static AndroidDriver driver;
 
+	@SuppressWarnings("rawtypes")
 	public static void main(String[] args) throws MalformedURLException, InterruptedException {
 		/*
 		 * File classpathRoot = new File(System.getProperty("user.dir")); File
@@ -35,34 +36,29 @@ public class StartApplication {
 		capabilities.setCapability("appPackage", "com.traveltriangle.traveller");
 		capabilities.setCapability("appActivity", "com.traveltriangle.traveller.HomeActivity");
 		capabilities.setCapability("clearSystemFiles", "true");
-		
-		
 		//capabilities.setCapability("unicodeKeyboard", true);
 		capabilities.setCapability("resetKeyboard", true);
 
-		driver = new AndroidDriver(new URL("http://0.0.0.0:4723/wd/hub"), capabilities);
+		
+		//driver = new AndroidDriver(new URL("http://192.168.98.101:4723/wd/hub"), capabilities);
+	    driver = new AndroidDriver(new URL("http://0.0.0.0:4723/wd/hub"), capabilities);
+	    
 		driver.manage().timeouts().implicitlyWait(80, TimeUnit.SECONDS);
-		//driver.setNetworkConnection(connection);
+
 		Thread.sleep(3000);
-
 		System.out.println("App Launched");
-
+		 /*	 	
 		 driver.findElement(By.id("btn_skip")).click();
 		 Thread.sleep(2000);
 		 driver.findElement(By.id(CANCEL)).click();
 		 Thread.sleep(2000);
-		 /*	 
+		
 		driver.findElement(By.xpath(Globeicon)).click();
 		Thread.sleep(12000);
 		driver.findElement(By.xpath("//android.widget.TextView[@text='DESTINATIONS']")).click();
 		Thread.sleep(5000);*/
-		App.Package(driver);
-		
-		
-		
-		// driver.runAppInBackground(1);
-		//App.Quotes(driver);
-
+	
+		App.fireIntent(driver);
 		driver.quit();
 
 	}

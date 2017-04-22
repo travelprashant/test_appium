@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
+//import io.appium.java_client.android.Activity;
 
 public class App {
 	
@@ -373,4 +374,26 @@ public static void Sort(AndroidDriver driver) throws MalformedURLException, Inte
 	
 }
 
+public static void fireIntent (AndroidDriver driver)throws MalformedURLException, InterruptedException{
+	System.out.println("fireIntent");
+	String deeplink="http://traveler-api.ttdev.in/Nature-Places";
+	try{
+	driver.startActivity("com.traveltriangle.traveller", "com.traveltriangle.traveller.HomeActivity", "com.traveltriangle.traveller", ".PackageListActivity,.DestinationCatalogActivity", "", "", "", " -a android.intent.action.VIEW -d "+deeplink );
+	//Activity activity = new Activity("com.traveltriangle.traveller", "com.traveltriangle.traveller.HomeActivity");
+	//driver.startActivity(activity);
+	System.out.println(driver.currentActivity());
+	System.out.println(driver.findElement(By.xpath("//android.widget.TextView[@text='Kerala']")).getText());
+	}
+	catch(Exception e){
+		System.out.println(e.getMessage());
+	}
+	
 }
+
+
+
+
+
+}
+
+
