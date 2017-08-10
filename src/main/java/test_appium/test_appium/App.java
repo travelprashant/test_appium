@@ -1,17 +1,34 @@
 package test_appium.test_appium;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 //import io.appium.java_client.android.Activity;
 
 public class App {
 	
-	
+	 static DateFormat dateFormat;
+	 
+	 public static  String APP_ACTIVITY_LIST = ".LoginActivity,.SignUpActivity,.QuoteViewActivity,com.facebook.FacebookActivity,"
+				+".HomeActivity,com.clevertap.android.sdk.InAppNotificationActivity,.ViewActivity,.SearchActivity,.DestinationDetailActivity,"
+				+".ContactUsActivity,.ThankYouMessageActivity,.ViewPhotosActivity,.ViewMoreActivity,.QuoteItineraryActivity,.TravelerInfoDetailActivity,"
+				+".NotificationsActivity,.ChangePasswordActivity,.AllBookingsActivity,.MapActivity,.RequestCreationActivity,.PaymentActivity,"
+				+".PaymentBrowserActivity,.PaymentNewBrowserActivity,.QuoteSelectionActivity,.CompareQuoteActivity,.ComparePackageActivity,.VouchersActivity,"
+				+".AttachmentBuilderActivity,com.soundcloud.android.crop.CropImageActivity, .AgentProfileDetailActivity,.WishlistActivity,.CallbackRequestActivity,.PackageDetailActivity,com.paytm.pgsdk.PaytmPGActivity,"
+				+".ProfileActivity,.InvoiceActivity,.PackageItineraryActivity,.PackageListActivity,.DestinationCatalogActivity,.InAppBrowserActivity,.HotelDetailActivity,.QuoteAccommodationActivity,.OffersActivity,.RequestCallbackActivity";
 	
  public static void swipe(String swipeType,AndroidDriver driver){
 		int screenWidth = 0;
@@ -51,6 +68,12 @@ public class App {
 		driver.findElement(By.id("com.traveltriangle.traveller:id/inputCurrentLoc")).sendKeys("Noida");
 		Thread.sleep(8000);
 
+
+		driver.findElement(By
+				.xpath("//android.widget.RadioButton[@text=’Anytime’]"))
+				.click();
+		Thread.sleep(2000);
+		
 		driver.findElement(By
 				.xpath("//android.widget.LinearLayout[@resource-id='com.traveltriangle.traveller:id/tripStageContainer']//android.widget.RelativeLayout[3]"))
 				.click();
@@ -286,6 +309,9 @@ public static void CompareQuote(AndroidDriver driver) throws MalformedURLExcepti
 	System.out.println(driver.findElement(By.xpath("//android.widget.HorizontalScrollView[@resource-id='com.traveltriangle.traveller:id/sliding_tabs']//android.widget.LinearLayout[1]//android.widget.RelativeLayout[1]//android.widget.TextView[@resource-id='com.traveltriangle.traveller:id/price']")).getText());
 	System.out.println(driver.findElement(By.xpath("//android.widget.HorizontalScrollView[@resource-id='com.traveltriangle.traveller:id/sliding_tabs']//android.widget.LinearLayout[1]//android.widget.RelativeLayout[2]//android.widget.TextView[@resource-id='com.traveltriangle.traveller:id/agent_name']")).getText());
 	System.out.println(driver.findElement(By.xpath("//android.widget.HorizontalScrollView[@resource-id='com.traveltriangle.traveller:id/sliding_tabs']//android.widget.LinearLayout[1]//android.widget.RelativeLayout[2]//android.widget.TextView[@resource-id='com.traveltriangle.traveller:id/price']")).getText());
+	Thread.sleep(3000);
+	driver.findElement(By.xpath("//android.widget.ListView[@resource-id='com.traveltriangle.traveller:id/quote_list']//android.widget.FrameLayout[@index='1']//android.widget.LinearLayout[1]//android.widget.CheckBox[1]")).click();
+	Thread.sleep(000);	
 	
 }
 
@@ -376,13 +402,17 @@ public static void Sort(AndroidDriver driver) throws MalformedURLException, Inte
 
 public static void fireIntent (AndroidDriver driver)throws MalformedURLException, InterruptedException{
 	System.out.println("fireIntent");
-	String deeplink="http://traveler-api.ttdev.in/Nature-Places";
+	//".PackageListActivity,.DestinationCatalogActivity"
+	//String deeplink="http://traveler-api.ttdev.in/travel-to/165-Gujarat";
+	String deeplink="http://bookings-qa4.ttdev.in/handle_link_authentication?new_page=http%3A%2F%2Fbookings-qa4.ttdev.in%2Frequested_trips%2F1623842-Tt-App&token=RDDLyuiB0t5oorxKJvvaX%2Bg56GiISiWjUVsrjDLT9ys%3D&cta_role=traveller&utm_nooverride=1&tracked_email_id=7135995&quote_id=2923519&tt_mailer=quote_summary&trip_id=1623842";
+	
 	try{
-	driver.startActivity("com.traveltriangle.traveller", "com.traveltriangle.traveller.HomeActivity", "com.traveltriangle.traveller", ".PackageListActivity,.DestinationCatalogActivity", "", "", "", " -a android.intent.action.VIEW -d "+deeplink );
+	driver.startActivity("com.traveltriangle.traveller", "com.traveltriangle.traveller.HomeActivity", "com.traveltriangle.traveller",APP_ACTIVITY_LIST, "", "", "", " -a android.intent.action.VIEW -d "+deeplink );
 	//Activity activity = new Activity("com.traveltriangle.traveller", "com.traveltriangle.traveller.HomeActivity");
 	//driver.startActivity(activity);
+	Thread.sleep(10000);
 	System.out.println(driver.currentActivity());
-	System.out.println(driver.findElement(By.xpath("//android.widget.TextView[@text='Kerala']")).getText());
+	//System.out.println(driver.findElement(By.xpath("//android.widget.TextView[@text='Kerala']")).getText());
 	}
 	catch(Exception e){
 		System.out.println(e.getMessage());
@@ -390,9 +420,26 @@ public static void fireIntent (AndroidDriver driver)throws MalformedURLException
 	
 }
 
+public static void takeScreenShot(AndroidDriver driver) throws MalformedURLException, InterruptedException{
+	
+	String destDir = "screenshots";
+	  // Capture screenshot.
+	  File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+	  // Set date format to set It as screenshot file name.
+	  dateFormat = new SimpleDateFormat("dd-MMM-yyyy__hh_mm_ssaa");
+	  // Create folder under project with name "screenshots" provided to destDir.
+	  new File(destDir).mkdirs();
+	  // Set file name using current date time.
+	  String destFile = dateFormat.format(new Date()) + ".png";
 
-
-
+	  try {
+	   // Copy paste file at destination folder location
+	   FileUtils.copyFile(scrFile, new File(destDir + "/" + destFile));
+	  } catch (IOException e) {
+	   e.printStackTrace();
+	  }
+	
+}
 
 }
 

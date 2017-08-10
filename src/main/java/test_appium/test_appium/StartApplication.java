@@ -47,18 +47,18 @@ public class StartApplication {
 
 		Thread.sleep(3000);
 		System.out.println("App Launched");
-		 /*	 	
+		  	
 		 driver.findElement(By.id("btn_skip")).click();
 		 Thread.sleep(2000);
 		 driver.findElement(By.id(CANCEL)).click();
 		 Thread.sleep(2000);
-		
+		 /*	
 		driver.findElement(By.xpath(Globeicon)).click();
 		Thread.sleep(12000);
 		driver.findElement(By.xpath("//android.widget.TextView[@text='DESTINATIONS']")).click();
 		Thread.sleep(5000);*/
 	
-		App.fireIntent(driver);
+		App.Form1(driver);
 		driver.quit();
 
 	}
